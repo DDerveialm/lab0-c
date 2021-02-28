@@ -192,23 +192,24 @@ static list_ele_t *merge(list_ele_t *p1, list_ele_t *p2)
 /*
  * Sorting algorithm implemention of q_sort()
  */
-static list_ele_t *merge_sort(list_ele_t *p)
+static void merge_sort(list_ele_t **list)
 {
-    if (!p || !p->next)
-        return p;
+    if (!(*list) || !(*list)->next)
+        return;
     // Split into two halves
-    list_ele_t **mid = &p, *tail = p;
-    while (tail->next) {
-        tail = tail->next;  // Move tail twice
-        if (tail->next)
-            tail = tail->next;
+    list_ele_t **mid = list, **tail = list;
+    while (*tail) {
+        tail = &((*tail)->next);  // Move tail twice
+        if (*tail)
+            tail = &((*tail)->next);
         mid = &((*mid)->next);  // Move mid once
     }
-    list_ele_t *L = p, *R = *mid;
+    list_ele_t *L = *list, *R = *mid;
     *mid = NULL;
-    L = merge_sort(L);
-    R = merge_sort(R);
-    return merge(L, R);
+
+    merge_sort(&L);
+    merge_sort(&R);
+    *list = merge(L, R);
 }
 
 void q_sort(queue_t *q)
@@ -216,7 +217,7 @@ void q_sort(queue_t *q)
     if (!q)
         return;
 
-    q->head = merge_sort(q->head);
+    merge_sort(&(q->head));
     q->tail = &(q->head);
     while (*(q->tail))
         q->tail = &((*(q->tail))->next);
