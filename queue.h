@@ -13,6 +13,9 @@
 
 /* Data structure declarations */
 
+/* Maximum length of c-string in list_ele_t to avoid vulnerability */
+#define QUEUE_STRLEN_MAX 255
+
 /* Linked list element (You shouldn't need to change this) */
 typedef struct ELE {
     /* Pointer to array holding string.
@@ -29,6 +32,8 @@ typedef struct {
      *        to efficiently implement q_size and q_insert_tail.
      */
     /* TODO: Remove the above comment when you are about to implement. */
+    int size;
+    list_ele_t **tail;
 } queue_t;
 
 /* Operations on queue */
