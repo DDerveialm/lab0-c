@@ -765,8 +765,10 @@ int main(int argc, char *argv[])
     /* Trigger call back function(auto completion) */
     linenoiseSetCompletionCallback(completion);
 
-    linenoiseHistorySetMaxLen(HISTORY_LEN);
-    linenoiseHistoryLoad(HISTORY_FILE); /* Load the history at startup */
+    if (!infile_name) {
+        linenoiseHistorySetMaxLen(HISTORY_LEN);
+        linenoiseHistoryLoad(HISTORY_FILE); /* Load the history at startup */
+    }
     set_verblevel(level);
     if (level > 1) {
         set_echo(true);
